@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Interview Workstation — PARAKH</title>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/interview.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      <span>PARAKH <span style="font-size: 0.8rem; font-weight: 500; color: var(--accent-primary); margin-left: 6px;">| Live Session</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><span id="interview-status-tag" class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">Active Session</span></li>
+      <li><button type="button" id="end-interview-btn" class="btn btn-danger btn-sm">End Interview</button></li>
+    </ul>
+  </nav>
+
+  <main class="container" style="max-width: 1300px;">
+    <!-- Progress Indicator -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+      <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);" id="progress-text">Question 1 of 5</span>
+      <span class="badge" id="difficulty-badge">INTERMEDIATE</span>
+    </div>
+    <div class="progress-bar-container">
+      <div id="progress-fill" class="progress-bar-fill" style="width: 20%;"></div>
+    </div>
+
+    <!-- Split-Screen Interview Grid -->
+    <div class="interview-grid" style="margin-top: var(--space-md);">
+      
+      <!-- Left Panel: Candidate Video & Audio Meter -->
+      <section class="hardware-panel">
+        <div class="video-container" style="position: relative;">
+          <video id="live-video" class="video-element" autoplay playsinline muted></video>
+          <canvas id="cv-hud-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;"></canvas>
+          <div id="live-cam-placeholder" class="video-placeholder" style="display: none;">
+            <span style="font-size: 2.5rem;">📹</span>
+            <p>Camera feed is inactive.</p>
+          </div>
+          <div class="video-overlay-badge" id="rec-indicator" style="display: none; z-index: 10;">
+            <div class="pulse-dot"></div>
+            <span>RECORDING AUDIO</span>
+          </div>
+        </div>
+
+        <div class="hardware-controls">
+          <button type="button" id="toggle-cam-live" class="btn btn-secondary btn-sm" style="flex: 1;">
+            Toggle Camera
+          </button>
+        </div>
+
+        <!-- Live Computer Vision (CV) Telemetry HUD -->
+        <div class="cv-telemetry-card" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 12px; margin-top: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+              <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></span>
+              CV ENGINE: ACTIVE
+            </span>
+            <span id="cv-hud-status" class="badge" style="font-size: 0.7rem; background: rgba(56, 189, 248, 0.15); color: #38bdf8;">TRACKING</span>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem;">
+            <div style="background: rgba(0,0,0,0.25); padding: 6px 8px; border-radius: var(--radius-sm);">
+              <div style="color: var(--text-muted); font-size: 0.7rem;">Eye Contact (EAR)</div>
+              <strong id="cv-eye-contact" style="color: #34d399; font-size: 0.85rem;">88% (Direct)</strong>
+            </div>
+            <div style="background: rgba(0,0,0,0.25); padding: 6px 8px; border-radius: var(--radius-sm);">
+              <div style="color: var(--text-muted); font-size: 0.7rem;">Head Pose Stability</div>
+              <strong id="cv-head-pose" style="color: #38bdf8; font-size: 0.85rem;">Centered (92%)</strong>
+            </div>
+            <div style="background: rgba(0,0,0,0.25); padding: 6px 8px; border-radius: var(--radius-sm);">
+              <div style="color: var(--text-muted); font-size: 0.7rem;">Posture Kinematics</div>
+              <strong id="cv-posture" style="color: #34d399; font-size: 0.85rem;">Upright & Ergonomic</strong>
+            </div>
+            <div style="background: rgba(0,0,0,0.25); padding: 6px 8px; border-radius: var(--radius-sm);">
+              <div style="color: var(--text-muted); font-size: 0.7rem;">Face Verification</div>
+              <strong id="cv-identity" style="color: #38bdf8; font-size: 0.85rem;">VERIFIED MATCH</strong>
+            </div>
+            <div style="background: rgba(0,0,0,0.25); padding: 6px 8px; border-radius: var(--radius-sm);">
+              <div style="color: var(--text-muted); font-size: 0.7rem;">Facial Emotion</div>
+              <strong id="cv-emotion" style="color: #a78bfa; font-size: 0.85rem;">Focused & Confident</strong>
+            </div>
+            <div style="background: rgba(0,0,0,0.25); padding: 6px 8px; border-radius: var(--radius-sm);">
+              <div style="color: var(--text-muted); font-size: 0.7rem;">Visual Confidence</div>
+              <strong id="cv-confidence" style="color: #f59e0b; font-size: 0.85rem;">86/100</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Audio VU Meter -->
+        <div class="vu-meter-card">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600;">
+            <span>Microphone Audio Level</span>
+            <span id="live-vu-text">0%</span>
+          </div>
+          <div class="vu-meter-bar-wrapper">
+            <div id="live-vu-bar" class="vu-meter-bar"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Question & Recorder -->
+      <section class="interview-workspace">
+        <!-- Question Box -->
+        <div class="question-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <div class="question-number" id="q-label">Question 1</div>
+            <span id="q-type-badge" class="badge" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc; font-weight: 600;">SPOKEN QUESTION</span>
+          </div>
+          <div class="question-text" id="q-text">Loading personalized question...</div>
+          <div class="question-tags">
+            <span class="badge" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc;" id="q-skill">Skill</span>
+            <span class="badge" style="background: rgba(255, 255, 255, 0.08); color: var(--text-secondary);" id="q-category">Category</span>
+          </div>
+
+          <!-- MCQ Options Container (rendered when question_type == 'MCQ') -->
+          <div id="mcq-container" style="display: none; margin-top: var(--space-md);">
+            <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px;">
+              Select the best answer option (you may also provide verbal reasoning below):
+            </div>
+            <div id="mcq-options-list" style="display: grid; gap: 8px;"></div>
+          </div>
+
+          <!-- Live Code Editor Container (rendered when question_type == 'CODE') -->
+          <div id="code-container" style="display: none; margin-top: var(--space-md);">
+            <!-- LeetCode Problem Details (Examples & Constraints) -->
+            <div id="code-problem-details" style="margin-bottom: var(--space-md);">
+              <!-- Examples Section -->
+              <div id="code-examples-section" style="margin-bottom: 12px;">
+                <div style="font-size: 0.85rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 6px;">
+                  <span>📋 Examples</span>
+                </div>
+                <div id="code-examples-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+              </div>
+
+              <!-- Constraints Section -->
+              <div id="code-constraints-section" style="margin-bottom: 12px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 10px 14px;">
+                <div style="font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">
+                  🔒 Constraints
+                </div>
+                <ul id="code-constraints-list" style="margin: 0; padding-left: 18px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; font-family: var(--font-mono, monospace);"></ul>
+              </div>
+            </div>
+
+            <!-- Code Editor Toolbar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; flex-wrap: wrap; gap: 8px; background: #0f172a; padding: 6px 12px; border-radius: var(--radius-md) var(--radius-md) 0 0; border: 1px solid var(--border-subtle); border-bottom: none;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; font-weight: 600; font-size: 0.75rem;">
+                  <span id="code-lang-label">PYTHON 3</span>
+                </span>
+                <span id="code-status-pill" style="font-size: 0.75rem; color: #94a3b8;">● Ready</span>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <button type="button" id="reset-code-btn" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 0.75rem;">
+                  ↺ Reset Starter
+                </button>
+                <button type="button" id="run-code-btn" class="btn btn-primary btn-sm" style="padding: 4px 14px; font-size: 0.8rem; font-weight: 700; background: #10b981; border-color: #10b981; color: #fff; display: inline-flex; align-items: center; gap: 5px;">
+                  <span>▶ Run Code</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Code Editor Textarea -->
+            <textarea id="code-editor" class="form-input" style="font-family: 'Consolas', 'Courier New', Courier, monospace; font-size: 0.95rem; line-height: 1.5; min-height: 240px; background: #0b1120; color: #f8fafc; border: 1px solid var(--border-subtle); border-radius: 0 0 var(--radius-md) var(--radius-md); white-space: pre; tab-size: 4;" spellcheck="false" placeholder="# -----------------------------------------------------&#10;# >>> START YOUR CODE HERE <<<&#10;# -----------------------------------------------------"></textarea>
+
+            <!-- LeetCode Interactive Testcase & Console Drawer -->
+            <div id="code-test-drawer" style="margin-top: 12px; background: #0f172a; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); overflow: hidden;">
+              <!-- Drawer Header & Tabs -->
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); background: #1e293b; padding: 4px 8px;">
+                <div id="test-case-tabs" style="display: flex; gap: 4px; overflow-x: auto;">
+                  <!-- Dynamic tabs (Case 1, Case 2, etc.) -->
+                </div>
+                <button type="button" id="test-console-tab" class="btn btn-sm" style="background: transparent; color: #94a3b8; font-size: 0.75rem; padding: 4px 8px;">
+                  Stdout Console
+                </button>
+              </div>
+
+              <!-- Overall Status Banner -->
+              <div id="test-overall-banner" style="display: none; padding: 8px 12px; font-size: 0.85rem; font-weight: 600; border-bottom: 1px solid var(--border-subtle);"></div>
+
+              <!-- Test Case Content Body -->
+              <div id="test-case-body" style="padding: 12px; font-size: 0.85rem;">
+                <div id="test-case-empty" style="color: #64748b; font-style: italic; text-align: center; padding: 12px;">
+                  Click <strong>▶ Run Code</strong> to execute your code against test cases.
+                </div>
+                <div id="test-case-details" style="display: none;">
+                  <div style="margin-bottom: 8px;">
+                    <div style="color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">Input</div>
+                    <pre id="tc-input" style="margin: 4px 0; background: #020617; padding: 6px 10px; border-radius: 4px; color: #f1f5f9; font-family: monospace; overflow-x: auto;"></pre>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                    <div>
+                      <div style="color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">Expected Output</div>
+                      <pre id="tc-expected" style="margin: 4px 0; background: #020617; padding: 6px 10px; border-radius: 4px; color: #34d399; font-family: monospace; overflow-x: auto;"></pre>
+                    </div>
+                    <div>
+                      <div style="color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">Your Output</div>
+                      <pre id="tc-actual" style="margin: 4px 0; background: #020617; padding: 6px 10px; border-radius: 4px; color: #f1f5f9; font-family: monospace; overflow-x: auto;"></pre>
+                    </div>
+                  </div>
+                  <div id="tc-runtime" style="color: #64748b; font-size: 0.75rem; text-align: right;"></div>
+                </div>
+                <div id="test-console-view" style="display: none;">
+                  <div style="color: #94a3b8; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 4px;">Standard Output (stdout)</div>
+                  <pre id="console-output" style="margin: 0; background: #020617; padding: 8px; border-radius: 4px; color: #cbd5e1; font-family: monospace; min-height: 48px; max-height: 120px; overflow-y: auto; white-space: pre-wrap;">(No stdout output)</pre>
+                </div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+              <span>💡 Press <strong>Tab</strong> to indent code. When ready, explain your algorithm verbally or click <strong>Submit Answer & Continue →</strong> below.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recording & Submission Controls -->
+        <div class="recorder-card" id="recorder-card">
+          <div class="timer-display" id="timer-display">00:00</div>
+          
+          <div id="recorder-instruction" style="color: var(--text-muted); font-size: 0.9rem;">
+            Click <strong>Start Spoken Answer</strong> and explain your approach out loud.
+          </div>
+
+          <div class="action-buttons-group">
+            <button type="button" id="record-btn" class="btn btn-primary" style="padding: 12px 24px;">
+              🎤 Start Spoken Answer
+            </button>
+            <button type="button" id="stop-btn" class="btn btn-danger" style="display: none; padding: 12px 24px;">
+              ⏹ Stop Recording
+            </button>
+          </div>
+
+          <!-- Real-Time Speech Display & Live Confirmation (solves speech interpretation) -->
+          <div id="speech-live-box" style="display: none; width: 100%; margin-top: var(--space-md); background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--accent-primary);">
+                🎙 Live Speech Recognition
+              </span>
+              <span id="speech-live-status" style="font-size: 0.75rem; color: #34d399;">Listening...</span>
+            </div>
+            <div id="live-transcript-stream" style="font-size: 0.9rem; color: #e2e8f0; min-height: 38px; line-height: 1.4; font-style: italic;">
+              Listening for your voice...
+            </div>
+          </div>
+
+          <!-- Playback and Submission (shown after recording stops or option selected) -->
+          <div id="playback-section" style="display: none; width: 100%; margin-top: var(--space-md);">
+            <audio id="audio-playback" controls class="audio-preview-player" style="margin-bottom: var(--space-sm);"></audio>
+
+            <!-- Editable Speech Confirmation Box -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-md);">
+              <label class="form-label" style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;">
+                Review & Confirm Spoken Transcript (Edit technical terms or acronyms if needed):
+              </label>
+              <textarea id="confirmed-transcript" class="form-input" rows="3" style="font-size: 0.9rem; resize: vertical;" placeholder="Your transcribed words will appear here. You can refine or verify them before AI evaluation."></textarea>
+            </div>
+
+            <div style="display: flex; gap: var(--space-md); justify-content: center;">
+              <button type="button" id="retry-btn" class="btn btn-secondary">
+                ↺ Re-record Answer
+              </button>
+              <button type="button" id="submit-btn" class="btn btn-success" style="padding: 10px 28px; font-weight: 600;">
+                Submit Answer & Continue →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instant Feedback Overlay Card (shown after submission before moving to next question) -->
+        <div class="card" id="feedback-card" style="display: none; margin-top: var(--space-md); border-left: 4px solid var(--accent-primary);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <h4 style="margin: 0; color: #fff;">Evaluation Feedback</h4>
+            <span id="fb-score-badge" class="badge" style="font-size: 1rem; font-weight: 700; background: rgba(16, 185, 129, 0.2); color: #34d399;">Score: --/100</span>
+          </div>
+          <div id="fb-explanation-box" style="margin-bottom: 8px; font-size: 0.9rem; color: #e2e8f0;"></div>
+          <div id="fb-text" style="font-size: 0.9rem; color: #94a3b8; line-height: 1.4;"></div>
+          <div style="display: flex; justify-content: flex-end; margin-top: var(--space-md);">
+            <button type="button" id="next-q-btn" class="btn btn-primary" style="padding: 8px 24px;">
+              Next Question →
+            </button>
+          </div>
+        </div>
+
+        <!-- Processing State (shown during STT + Evaluation) -->
+        <div class="card processing-indicator" id="processing-card" style="display: none;">
+          <div class="spinner"></div>
+          <h3 id="processing-heading">Evaluating Response...</h3>
+          <p id="processing-subtext" style="color: var(--text-muted); text-align: center; margin: 0;">
+            Transcribing speech and running multi-metric evaluation...
+          </p>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="/static/js/interview.js"></script>
+</body>
+</html>

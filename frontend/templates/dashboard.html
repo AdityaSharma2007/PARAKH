@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — PARAKH</title>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <style>
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+    }
+    .stat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+    }
+    .stat-val {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .session-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .session-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      <span>PARAKH</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/dashboard" class="nav-link active">Dashboard</a></li>
+      <li><a href="/resume" class="nav-link">Upload Resume</a></li>
+      <li><a href="/analytics" class="nav-link">Analytics</a></li>
+      <li><span id="system-mode-badge" class="mode-badge mock">Loading...</span></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <div class="dashboard-header">
+      <div>
+        <h1>Candidate Workspace</h1>
+        <p>Review interview history, performance metrics, and launch new adaptive interviews.</p>
+      </div>
+      <div>
+        <a href="/resume" class="btn btn-primary">+ Start New Interview</a>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Interviews</div>
+        <div class="stat-val" id="stat-total">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Average Score</div>
+        <div class="stat-val" id="stat-avg">0.0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Highest Score</div>
+        <div class="stat-val" id="stat-high">0.0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Track</div>
+        <div class="stat-val" style="font-size: 1.25rem; margin-top: 6px;" id="stat-track">Ready</div>
+      </div>
+    </div>
+
+    <!-- Interview History Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Interview Sessions History</h3>
+        <a href="/analytics" class="btn btn-secondary btn-sm">View Improvement Charts →</a>
+      </div>
+      <div id="sessions-list">
+        <div style="text-align: center; color: var(--text-muted); padding: 40px;">
+          Loading interview sessions...
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>PARAKH Assessment Platform — Performance and Resume Analysis for Knowledge and Hiring.</p>
+  </footer>
+
+  <script type="module" src="/static/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Analysis — PARAKH</title>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <style>
+    .upload-zone {
+      border: 2px dashed var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-2xl) var(--space-lg);
+      text-align: center;
+      background-color: var(--bg-card);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      margin-bottom: var(--space-xl);
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--accent-primary);
+      background-color: rgba(99, 102, 241, 0.05);
+    }
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin-top: var(--space-sm);
+    }
+    .skill-chip {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chip-remove {
+      cursor: pointer;
+      color: var(--text-muted);
+      font-weight: bold;
+    }
+    .chip-remove:hover {
+      color: var(--danger);
+    }
+    .role-gap-card {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-sm);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      <span>PARAKH</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+      <li><a href="/resume" class="nav-link active">Upload Resume</a></li>
+      <li><a href="/analytics" class="nav-link">Analytics</a></li>
+      <li><span id="system-mode-badge" class="mode-badge mock">Loading...</span></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <h1>Resume Upload & Extraction</h1>
+    <p>Upload your PDF or DOCX resume. PARAKH parses your skills, projects, and work experience so you can review and refine them before interview generation.</p>
+
+    <!-- Upload Box -->
+    <div id="drop-zone" class="upload-zone">
+      <div style="font-size: 2.5rem; margin-bottom: var(--space-sm);">📄</div>
+      <h3>Drag & drop your resume file here</h3>
+      <p style="margin-bottom: var(--space-md);">Supports PDF and DOCX documents (Up to 15MB)</p>
+      <input type="file" id="file-input" accept=".pdf,.docx" style="display: none;">
+      <button type="button" class="btn btn-secondary" onclick="document.getElementById('file-input').click()">
+        Choose File from Computer
+      </button>
+      <div id="upload-status" style="margin-top: 15px; font-weight: 500; display: none;"></div>
+    </div>
+
+    <!-- Extracted Profile Review Form (Hidden initially) -->
+    <div id="profile-section" style="display: none;">
+      <!-- Heavy CV Intelligence Overview -->
+      <div class="card" style="margin-bottom: var(--space-xl); background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%); border: 1px solid var(--border-light);">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-lg); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-md); margin-bottom: var(--space-md);">
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h2 style="margin: 0; font-size: 1.5rem;">Resume Intelligence & ATS Analysis</h2>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">PARAKH CV Engine</span>
+            </div>
+            <p style="margin: 4px 0 0 0; color: var(--text-muted); font-size: 0.9rem;">
+              Comprehensive evaluation of ATS parsability, quantified impact metrics, and technology ontology mapping.
+            </p>
+          </div>
+
+          <!-- ATS Score Gauge -->
+          <div style="display: flex; align-items: center; gap: var(--space-md); background: var(--bg-card); padding: 12px 20px; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+            <div id="ats-gauge-circle" style="width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; border: 4px solid #10b981; color: #10b981;">
+              <span id="ats-score-val">--</span>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">ATS Compatibility</div>
+              <div id="ats-tier-label" style="font-weight: 700; color: #fff;">Evaluating...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ATS Checklist & Metrics Breakdown -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-md);">
+          <div style="background: var(--bg-card); padding: var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <h4 style="margin: 0 0 8px 0; font-size: 0.95rem; color: #fff;">ATS Readability Checklist</h4>
+            <div id="ats-checklist" style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px;"></div>
+          </div>
+
+          <div style="background: var(--bg-card); padding: var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <h4 style="margin: 0 0 8px 0; font-size: 0.95rem; color: #fff;">CV Optimization Advice</h4>
+            <div id="cv-tips-list" style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 6px;"></div>
+          </div>
+        </div>
+
+        <!-- Contact Links Bar -->
+        <div id="contact-links-bar" style="display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; padding-top: var(--space-xs);">
+        </div>
+      </div>
+
+      <!-- Candidate Profile Editing & Verification -->
+      <div class="card">
+        <div class="card-header">
+          <h3>Candidate Profile & Verification</h3>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Review and refine your profile before starting your personalized interview</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-md);">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="prof-name" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="prof-email" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="text" id="prof-phone" class="form-input">
+          </div>
+        </div>
+
+        <!-- Categorized Skills Depth Matrix -->
+        <div class="form-group" style="margin-top: var(--space-md);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label class="form-label" style="margin: 0;">Categorized Technical Skills & Depth</label>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Mapped to 300+ Industry Ontologies</span>
+          </div>
+          <div style="display: flex; gap: var(--space-sm); margin-bottom: var(--space-sm);">
+            <input type="text" id="new-skill-input" class="form-input" placeholder="e.g. Docker, Redis, Kubernetes" style="max-width: 320px;">
+            <button type="button" id="add-skill-btn" class="btn btn-secondary btn-sm">+ Add Skill</button>
+          </div>
+          <div id="skills-matrix-container"></div>
+        </div>
+
+        <!-- Projects & Architecture Section -->
+        <div class="form-group" style="margin-top: var(--space-lg);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label class="form-label" style="margin: 0;">Extracted Projects, Architecture & Metrics</label>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Grounding for deep-dive interview questions</span>
+          </div>
+          <div id="projects-list"></div>
+        </div>
+
+        <!-- Role Skill Gap Analysis Preview -->
+        <div class="form-group" style="margin-top: var(--space-lg);">
+          <label class="form-label">Role Readiness & Skill Gap Benchmark</label>
+          <div id="role-gap-container"></div>
+        </div>
+
+        <!-- Submit & Proceed Button -->
+        <div style="display: flex; justify-content: flex-end; gap: var(--space-md); margin-top: var(--space-xl); padding-top: var(--space-md); border-top: 1px solid var(--border-light);">
+          <button type="button" id="save-profile-btn" class="btn btn-primary" style="padding: 12px 32px; font-weight: 600;">
+            Confirm Profile & Setup Interview Track →
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>PARAKH Assessment Platform — Performance and Resume Analysis for Knowledge and Hiring.</p>
+  </footer>
+
+  <script type="module" src="/static/js/resume.js"></script>
+</body>
+</html>

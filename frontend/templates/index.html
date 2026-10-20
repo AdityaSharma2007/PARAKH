@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARAKH — Performance and Resume Analysis for Knowledge and Hiring</title>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <style>
+    .hero {
+      text-align: center;
+      padding: var(--space-2xl) 0 var(--space-xl);
+      max-width: 840px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #a5b4fc;
+      margin-bottom: var(--space-md);
+    }
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: var(--space-md);
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: var(--space-xl);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--space-lg);
+      margin: var(--space-2xl) 0;
+    }
+    .feature-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      transition: all var(--transition-fast);
+    }
+    .feature-card:hover {
+      border-color: var(--border-focus);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--accent-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: var(--space-md);
+    }
+    .how-it-works-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-xl) 0;
+    }
+    .step-item {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      position: relative;
+    }
+    .step-num {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--accent-primary);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      <span>PARAKH</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link active">Home</a></li>
+      <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+      <li><a href="/resume" class="nav-link">Upload Resume</a></li>
+      <li><a href="/analytics" class="nav-link">Analytics</a></li>
+      <li><span id="system-mode-badge" class="mode-badge mock">Loading...</span></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-badge">
+        <span>⚡ AI-Driven Candidate Assessment</span>
+      </div>
+      <h1 class="hero-title">Performance and Resume Analysis for Knowledge and Hiring</h1>
+      <p class="hero-subtitle">
+        PARAKH simulates a personalized technical interview deeply grounded in your actual resume projects. 
+        Speak naturally, adapt question difficulty in real time, and receive explainable assessments with verified evidence graphs.
+      </p>
+      <div style="display: flex; gap: var(--space-md); justify-content: center;">
+        <a href="/resume" class="btn btn-primary" style="font-size: 1.05rem; padding: 12px 28px;">
+          Start Interview Now
+        </a>
+        <a href="/dashboard" class="btn btn-secondary" style="font-size: 1.05rem; padding: 12px 24px;">
+          View Dashboard
+        </a>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section style="margin: var(--space-2xl) 0;">
+      <h2 style="text-align: center;">How PARAKH Works</h2>
+      <p style="text-align: center;">From resume upload to evidence-verified evaluation in 4 seamless steps.</p>
+      <div class="how-it-works-steps">
+        <div class="step-item">
+          <div class="step-num">Step 01</div>
+          <h4 style="color:#fff; margin-bottom:4px;">Upload & Parse</h4>
+          <p style="font-size: 0.85rem; margin:0;">Upload PDF/DOCX. Extract skills, projects, and verify your profile.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">Step 02</div>
+          <h4 style="color:#fff; margin-bottom:4px;">Configure Track</h4>
+          <p style="font-size: 0.85rem; margin:0;">Select your target job role, interview type, and initial difficulty.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">Step 03</div>
+          <h4 style="color:#fff; margin-bottom:4px;">Spoken Interview</h4>
+          <p style="font-size: 0.85rem; margin:0;">Answer out loud. Adaptive difficulty adjusts question complexity on the fly.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">Step 04</div>
+          <h4 style="color:#fff; margin-bottom:4px;">Explainable Report</h4>
+          <p style="font-size: 0.85rem; margin:0;">View transcript evidence, knowledge-gap map, and improvement charts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Distinctive Features -->
+    <section>
+      <h2 style="text-align: center;">Distinctive Intelligence Engines</h2>
+      <p style="text-align: center;">Built beyond generic quizzes to measure authentic engineering competency.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Resume-to-Evidence Graph</h3>
+          <p>Every claim on your resume is systematically mapped to interview questions and verified transcript excerpts.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <h3>Knowledge Consistency Engine</h3>
+          <p>Checks whether technical understanding holds across related scenarios rather than penalizing isolated syntax slips.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Dynamic Follow-Up Questions</h3>
+          <p>The AI interviewer listens to your explanation and generates contextual follow-ups citing your exact words.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Explainable Scoring</h3>
+          <p>Transparent scoring rubrics clearly explain why an answer earned 75 instead of 90 with cited evidence.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🗺️</div>
+          <h3>Personalized Knowledge-Gap Map</h3>
+          <p>Distinguishes foundational prerequisites from advanced gaps, providing a structured learning roadmap.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <h3>Multi-Test Improvement Trends</h3>
+          <p>Interactive SVG progression curves and skill mastery deltas track your improvement across multiple sessions.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>PARAKH Assessment Platform — Performance and Resume Analysis for Knowledge and Hiring.</p>
+    <p style="font-size: 0.75rem; color: var(--text-dim);">Privacy Guarded: Local processing, consent-gated media streams, and zero facial biometric profiling.</p>
+  </footer>
+
+  <script type="module" src="/static/js/api.js"></script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Report — PARAKH</title>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/report.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      <span>PARAKH <span style="font-size: 0.8rem; font-weight: 500; color: var(--accent-primary); margin-left: 6px;">| Assessment Report</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+      <li><a href="/analytics" class="nav-link">Improvement Trends</a></li>
+      <li><button type="button" class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Print / Export PDF</button></li>
+    </ul>
+  </nav>
+
+  <main class="container" style="max-width: 1100px;">
+    <!-- Report Hero Card -->
+    <div class="report-header-card">
+      <div>
+        <div class="badge" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc; margin-bottom: 8px;">PARAKH Comprehensive Assessment</div>
+        <h1 style="margin-bottom: 6px;" id="report-title">Candidate Assessment</h1>
+        <p style="margin-bottom: 8px;" id="report-subtitle">Evaluating technical competency, architectural depth, and communication clarity.</p>
+        <div style="font-size: 0.85rem; color: var(--text-muted);" id="report-meta">Session Date: ...</div>
+      </div>
+      <div class="score-hero-circle" id="hero-circle">
+        <div class="score-hero-inner">
+          <div class="score-hero-num" id="hero-score">0</div>
+          <div class="score-hero-label">Overall / 100</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dimension Metric Cards -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-card-header">
+          <span>Technical Correctness (35%)</span>
+          <span id="metric-tech-val">0</span>
+        </div>
+        <div class="progress-bar-container"><div id="metric-tech-bar" class="progress-bar-fill" style="width: 0%;"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-header">
+          <span>Conceptual Understanding (25%)</span>
+          <span id="metric-concept-val">0</span>
+        </div>
+        <div class="progress-bar-container"><div id="metric-concept-bar" class="progress-bar-fill" style="width: 0%;"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-header">
+          <span>Relevance & Directness (20%)</span>
+          <span id="metric-rel-val">0</span>
+        </div>
+        <div class="progress-bar-container"><div id="metric-rel-bar" class="progress-bar-fill" style="width: 0%;"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-header">
+          <span>Articulation Clarity (20%)</span>
+          <span id="metric-clarity-val">0</span>
+        </div>
+        <div class="progress-bar-container"><div id="metric-clarity-bar" class="progress-bar-fill" style="width: 0%;"></div></div>
+      </div>
+    </div>
+
+    <!-- 1. Resume-to-Evidence Intelligence Graph -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3>1. Resume-to-Evidence Intelligence Graph</h3>
+          <p style="font-size: 0.85rem; margin: 0;">Cross-references resume claims against spoken answer evidence and verification status.</p>
+        </div>
+      </div>
+      <div id="evidence-graph-container" class="evidence-graph-container">
+        <div style="color: var(--text-muted); padding: 20px;">Analyzing evidence graph nodes...</div>
+      </div>
+    </div>
+
+    <!-- 2. Computer Vision (CV) Behavioral & Emotional Assessment -->
+    <div class="card" style="border-left: 4px solid #38bdf8;">
+      <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <div class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-weight: 700; margin-bottom: 6px;">
+            COMPUTER VISION (CV) SUBSYSTEM
+          </div>
+          <h3 style="margin: 0; color: #fff;">2. Computer Vision Behavioral & Emotional Assessment</h3>
+          <p style="font-size: 0.85rem; margin-top: 4px; color: var(--text-muted);">
+            OpenCV-powered facial emotion classification, ocular gaze tracking, and head posture stability.
+          </p>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Visual Confidence</div>
+          <div id="cv-report-confidence" style="font-size: 1.8rem; font-weight: 800; color: #38bdf8;">--/100</div>
+        </div>
+      </div>
+
+      <!-- CV Metrics Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-md); margin-top: var(--space-md);">
+        
+        <!-- Eye Contact & Gaze -->
+        <div style="background: var(--bg-card-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: #f1f5f9;">👁️ Eye Contact & Gaze</span>
+            <span id="cv-report-eye-val" class="badge" style="background: rgba(52, 211, 153, 0.15); color: #34d399;">--%</span>
+          </div>
+          <div class="progress-bar-container"><div id="cv-report-eye-bar" class="progress-bar-fill" style="width: 0%; background: #34d399;"></div></div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+            <span>Gaze: <strong id="cv-report-gaze-status" style="color: #cbd5e1;">Direct</strong></span>
+            <span>Blink: <strong id="cv-report-blink" style="color: #cbd5e1;">--/min</strong></span>
+          </div>
+        </div>
+
+        <!-- Head Pose & Posture Stability -->
+        <div style="background: var(--bg-card-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: #f1f5f9;">📐 Head Pose Stability</span>
+            <span id="cv-report-head-val" class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">--%</span>
+          </div>
+          <div class="progress-bar-container"><div id="cv-report-head-bar" class="progress-bar-fill" style="width: 0%; background: #38bdf8;"></div></div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+            <span>Posture: <strong id="cv-report-posture-status" style="color: #cbd5e1;">Stable</strong></span>
+            <span>Stress: <strong id="cv-report-stress" style="color: #34d399;">LOW</strong></span>
+          </div>
+        </div>
+
+        <!-- Upper-Body Posture Kinematics -->
+        <div style="background: var(--bg-card-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: #f1f5f9;">🧍 Posture Kinematics</span>
+            <span id="cv-report-posture-comp" class="badge" style="background: rgba(52, 211, 153, 0.15); color: #34d399;">--/100</span>
+          </div>
+          <div class="progress-bar-container"><div id="cv-report-posture-bar" class="progress-bar-fill" style="width: 0%; background: #34d399;"></div></div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+            <span>Slouch Ratio: <strong id="cv-report-slouch" style="color: #cbd5e1;">--%</strong></span>
+            <span>Fidget Index: <strong id="cv-report-fidget" style="color: #34d399;">Minimal</strong></span>
+          </div>
+        </div>
+
+        <!-- Biometric Identity Verification Continuity -->
+        <div style="background: var(--bg-card-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: #f1f5f9;">🛡️ Identity Continuity</span>
+            <span id="cv-report-identity-status" class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">VERIFIED</span>
+          </div>
+          <div class="progress-bar-container"><div id="cv-report-identity-bar" class="progress-bar-fill" style="width: 0%; background: #38bdf8;"></div></div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+            <span>Continuity: <strong id="cv-report-identity-ratio" style="color: #cbd5e1;">100%</strong></span>
+            <span>Anti-Cheat: <strong id="cv-report-anticheat" style="color: #34d399;">CLEAR</strong></span>
+          </div>
+        </div>
+
+        <!-- Facial Emotion Breakdown -->
+        <div style="background: var(--bg-card-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: #f1f5f9;">😊 Facial Emotion</span>
+            <span id="cv-report-dominant-emo" class="badge" style="background: rgba(167, 139, 250, 0.15); color: #a78bfa;">Confident</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Confident / Composed</span>
+              <strong id="emo-confident-val" style="color: #a78bfa;">--%</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Focused / Engaged</span>
+              <strong id="emo-focused-val" style="color: #38bdf8;">--%</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Neutral / Thoughtful</span>
+              <strong id="emo-neutral-val" style="color: #94a3b8;">--%</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Hesitant / Stressed</span>
+              <strong id="emo-hesitant-val" style="color: #f59e0b;">--%</strong>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CV Summary Box -->
+      <div style="background: rgba(56, 189, 248, 0.08); border-left: 3px solid #38bdf8; padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 14px; font-size: 0.85rem; color: #e2e8f0;" id="cv-report-summary">
+        Loading Computer Vision behavioral audit...
+      </div>
+
+      <!-- Academic CV Methodology Card (For CV Professor Review) -->
+      <div style="margin-top: 14px; background: rgba(0,0,0,0.25); border: 1px dashed var(--border-subtle); border-radius: var(--radius-sm); padding: 12px;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; margin-bottom: 6px;">
+          🔬 Computer Vision Pipeline & Mathematical Methodology (CV Academic Project Audit)
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; font-size: 0.78rem; color: var(--text-muted);">
+          <div>
+            <strong style="color: #f1f5f9;">Face Detection:</strong><br>
+            OpenCV Multi-Scale Haar Feature Cascades with scale space pyramid representation
+          </div>
+          <div>
+            <strong style="color: #f1f5f9;">Face Verification & Anti-Cheat:</strong><br>
+            3D Color-Spatial Histogram Cosine Correlation against calibrated reference embedding
+          </div>
+          <div>
+            <strong style="color: #f1f5f9;">Posture Kinematics:</strong><br>
+            Vertical Centroid Displacement ($y_{norm} = c_y / H$) & Temporal Motion Energy
+          </div>
+          <div>
+            <strong style="color: #f1f5f9;">Visual Confidence Index:</strong><br>
+            <code style="color: #34d399;">VCI = 0.35×Eye + 0.25×Pose + 0.20×Posture + 0.20×Composure</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Raw Audio Waveform Acoustic Signal Analysis (Independent of Transcript) -->
+    <div class="card" style="border-left: 4px solid #10b981;">
+      <div class="card-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+          <div class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; font-weight: 700; margin-bottom: 6px;">
+            RAW ACOUSTIC SIGNAL PROCESSING (PYAV)
+          </div>
+          <h3 style="margin: 0; color: #fff;">3. Raw Audio Acoustic Confidence & Hesitation Analysis</h3>
+          <p style="font-size: 0.85rem; margin-top: 4px; color: var(--text-muted);">
+            Signal processing performed directly on the raw audio waveform, analyzing speech fluency, hesitations (>1.5s), and pitch jitter independent of text transcripts.
+          </p>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Acoustic Vocal Confidence</div>
+          <div id="audio-report-confidence" style="font-size: 1.8rem; font-weight: 800; color: #34d399;">--/100</div>
+        </div>
+      </div>
+
+      <!-- Acoustic Metrics Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-md); margin-top: var(--space-md);">
+        
+        <!-- Speech Fluency & Duty Cycle -->
+        <div style="background: var(--bg-card-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: #f1f5f9;">🎙️ Speech Fluency Ratio</span>
+            <span id="audio-report-fluency-val" class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">--%</span>
+          </div>
+          <div class="progress-bar-container"><div id="audio-report-fluency-bar" class="progress-bar-fill" style="width: 0%; background: #34d399;"></div></div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
+            <span>Voiced: <strong id="audio-report-voiced-sec" style="color: #cbd5e1;">--s</strong></span>
+            <span>Silence: <strong id="audio-report-silence-sec" style="color: #cbd5e1;">--s</strong></span>
+          </div>
+        </div>
+
+        <!-- Hesitation Pauses (> 1.5s) -->
+        <div style="background: var(--bg-card-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: #f1f5f9;">⏱️ Hesitation Pauses (>1.5s)</span>
+            <span id="audio-report-pauses-val" class="badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">0 Pauses</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Speaking Cadence:</div>
+          <strong id="audio-report-cadence" style="color: #38bdf8; font-size: 0.9rem;">Steady Conversational Pace</strong>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Uninterrupted speech runs without cognitive stalls.</div>
+        </div>
+
+        <!-- Vocal Tremor & Pitch Jitter -->
+        <div style="background: var(--bg-card-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: #f1f5f9;">〰️ Vocal Tremor / Jitter</span>
+            <span id="audio-report-jitter-val" class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">--%</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Tremor Classification:</div>
+          <strong id="audio-report-tremor" style="color: #34d399; font-size: 0.9rem;">Low (Composed & Firm)</strong>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Pitch stability derived from normalized autocorrelation peaks.</div>
+        </div>
+
+        <!-- RMS Volume Projection -->
+        <div style="background: var(--bg-card-alt); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 0.9rem; color: #f1f5f9;">🔊 Vocal Projection (RMS)</span>
+            <span id="audio-report-rms-val" class="badge" style="background: rgba(167, 139, 250, 0.15); color: #a78bfa;">-- dB</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Projection Quality:</div>
+          <strong id="audio-report-projection" style="color: #a78bfa; font-size: 0.9rem;">Clear & Audibly Projected</strong>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Root Mean Square power across active speech frames.</div>
+        </div>
+
+      </div>
+
+      <!-- Acoustic Summary Box -->
+      <div style="background: rgba(16, 185, 129, 0.08); border-left: 3px solid #10b981; padding: 10px 14px; border-radius: var(--radius-sm); margin-top: 14px; font-size: 0.85rem; color: #e2e8f0;" id="audio-report-summary">
+        Loading raw audio acoustic analysis...
+      </div>
+
+      <!-- Academic Signal Processing Methodology Box -->
+      <div style="margin-top: 14px; background: rgba(0,0,0,0.25); border: 1px dashed var(--border-subtle); border-radius: var(--radius-sm); padding: 12px;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: #34d399; text-transform: uppercase; margin-bottom: 6px;">
+          📡 Acoustic Signal Processing Methodology (Non-Transcript Telemetry)
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; font-size: 0.78rem; color: var(--text-muted);">
+          <div>
+            <strong style="color: #f1f5f9;">Waveform Extractor:</strong><br>
+            Native PyAV Demuxing to 1D Float32 PCM Array
+          </div>
+          <div>
+            <strong style="color: #f1f5f9;">Voice Activity Detection (VAD):</strong><br>
+            Adaptive Windowed Root-Mean-Square Energy: $E_m = \sqrt{\frac{1}{W}\sum x[n]^2}$
+          </div>
+          <div>
+            <strong style="color: #f1f5f9;">Pitch & Tremor Estimation:</strong><br>
+            Normalized Autocorrelation Peak Vectoring: $R_{xx}(\tau)$ over Human Range (75Hz-400Hz)
+          </div>
+          <div>
+            <strong style="color: #f1f5f9;">Hesitation Detection:</strong><br>
+            Run-Length Silence Quantization (> 1.5s continuous unvoiced intervals)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Explainable Scoring (Question-by-Question) -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3>4. Explainable Scoring Breakdown</h3>
+          <p style="font-size: 0.85rem; margin: 0;">Transparent audit of scores with candidate transcript citations and "Why this score" rationale.</p>
+        </div>
+      </div>
+      <div id="questions-evaluation-list"></div>
+    </div>
+
+    <!-- 4. Knowledge Consistency Analysis -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3>4. Knowledge Consistency Engine</h3>
+          <p style="font-size: 0.85rem; margin: 0;">Detects whether performance was conceptually uniform or driven by surface syntax.</p>
+        </div>
+      </div>
+      <div id="consistency-container"></div>
+    </div>
+
+    <!-- 5. Personalized Knowledge-Gap Map -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3>5. Personalized Knowledge-Gap Map & Learning Roadmap</h3>
+          <p style="font-size: 0.85rem; margin: 0;">Hierarchical dependency prioritization separating foundational prerequisites from advanced scale.</p>
+        </div>
+      </div>
+      <div id="knowledge-gap-container"></div>
+    </div>
+
+    <!-- Strengths & Recommendations -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-xl);">
+      <div class="card" style="margin: 0;">
+        <h3>Verified Strengths</h3>
+        <ul id="strengths-list" style="padding-left: 20px; color: var(--text-secondary); margin-top: 10px;"></ul>
+      </div>
+      <div class="card" style="margin: 0;">
+        <h3>Priority Recommendations</h3>
+        <ul id="recommendations-list" style="padding-left: 20px; color: var(--text-secondary); margin-top: 10px;"></ul>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <p>PARAKH Assessment Platform — Performance and Resume Analysis for Knowledge and Hiring.</p>
+  </footer>
+
+  <script type="module" src="/static/js/report.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Setup — PARAKH</title>
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/interview.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      <span>PARAKH</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+      <li><a href="/resume" class="nav-link">Upload Resume</a></li>
+      <li><a href="/analytics" class="nav-link">Analytics</a></li>
+      <li><span id="system-mode-badge" class="mode-badge mock">Loading...</span></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <h1>Configure Interview Session</h1>
+    <p>Tailor your interview track, choose starting difficulty, and verify your camera and microphone equipment before entering the interview.</p>
+
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-xl); align-items: start;">
+      <!-- Left: Form Configuration -->
+      <div class="card">
+        <h3 style="margin-bottom: var(--space-md);">Session Parameters</h3>
+        
+        <div class="form-group">
+          <label class="form-label">Target Job Role</label>
+          <select id="target-role" class="form-select">
+            <option value="Full Stack Engineer" selected>Full Stack Engineer</option>
+            <option value="Python Backend Engineer">Python Backend Engineer</option>
+            <option value="Frontend Engineer">Frontend Engineer</option>
+            <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+            <option value="DevOps Engineer">DevOps Engineer</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Interview Track</label>
+          <select id="interview-type" class="form-select">
+            <option value="mixed" selected>Mixed (Technical, Architecture, & Scenarios)</option>
+            <option value="technical">Pure Technical Deep-Dive</option>
+            <option value="project_based">Project & Architectural Decisions</option>
+            <option value="behavioral">Behavioral & Incident Handling</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Starting Difficulty Level</label>
+          <select id="difficulty" class="form-select">
+            <option value="BEGINNER">Beginner (Foundational Concepts)</option>
+            <option value="INTERMEDIATE" selected>Intermediate (Standard Engineering Bar)</option>
+            <option value="ADVANCED">Advanced (High Scale & Complex Resilience)</option>
+          </select>
+          <small style="color: var(--text-muted); font-size: 0.8rem;">Note: PARAKH's adaptive engine dynamically adjusts question difficulty based on your rolling answers.</small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Question Mix & Format</label>
+          <select id="question-mix" class="form-select">
+            <option value="mixed" selected>Balanced Mixed (Spoken + MCQ + Live Code Challenge) — Recommended</option>
+            <option value="spoken_only">Spoken Only (Project Deep-Dives & Behavioral)</option>
+            <option value="coding_mcq">Coding & Technical MCQ Only</option>
+          </select>
+          <small style="color: var(--text-muted); font-size: 0.8rem;">Select whether you want a combination of speaking, multiple-choice, and code refactoring challenges.</small>
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label class="form-label" style="margin-bottom: 0;">Number of Questions</label>
+            <span id="question-count-label" style="font-weight: 700; color: var(--accent-light); font-size: 0.95rem;">5 Questions</span>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+            <input type="number" id="total-questions" class="form-input" min="1" max="15" value="5" style="width: 90px; text-align: center; font-weight: 700; font-size: 1.1rem; padding: 8px;" />
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; flex: 1;">
+              <button type="button" class="btn btn-secondary btn-sm q-preset-btn" data-count="1">1 (Express)</button>
+              <button type="button" class="btn btn-secondary btn-sm q-preset-btn" data-count="3">3</button>
+              <button type="button" class="btn btn-secondary btn-sm q-preset-btn active" data-count="5">5 (Standard)</button>
+              <button type="button" class="btn btn-secondary btn-sm q-preset-btn" data-count="8">8</button>
+              <button type="button" class="btn btn-secondary btn-sm q-preset-btn" data-count="10">10</button>
+              <button type="button" class="btn btn-secondary btn-sm q-preset-btn" data-count="15">15 (Full Depth)</button>
+            </div>
+          </div>
+          <small style="color: var(--text-muted); font-size: 0.8rem;">Select a quick preset or type any custom question count between 1 and 15.</small>
+        </div>
+
+        <button type="button" id="start-btn" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: var(--space-md); font-size: 1.05rem;">
+          Generate Personalized Questions & Start Interview →
+        </button>
+      </div>
+
+      <!-- Right: Hardware Diagnostic Card -->
+      <div class="card">
+        <h3 style="margin-bottom: var(--space-sm);">Hardware & Audio Diagnostic</h3>
+        <p style="font-size: 0.85rem; margin-bottom: var(--space-md);">Ensure your microphone and camera permissions are ready. Spoken answers are required.</p>
+
+        <!-- Video Element -->
+        <div class="video-container" style="height: 200px; margin-bottom: var(--space-md);">
+          <video id="cam-preview" class="video-element" autoplay playsinline muted style="display: none;"></video>
+          <div id="cam-placeholder" class="video-placeholder">
+            <span style="font-size: 2rem;">📹</span>
+            <p style="font-size: 0.85rem; margin: 0;">Camera is currently idle. Click below to test.</p>
+          </div>
+        </div>
+
+        <div class="hardware-controls" style="margin-bottom: var(--space-md);">
+          <button type="button" id="toggle-cam-btn" class="btn btn-secondary btn-sm">Test Camera</button>
+          <button type="button" id="test-mic-btn" class="btn btn-secondary btn-sm">Test Microphone</button>
+        </div>
+
+        <!-- Mic VU Meter -->
+        <div class="vu-meter-card">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600;">
+            <span>Microphone Input Level</span>
+            <span id="vu-level-text">0%</span>
+          </div>
+          <div class="vu-meter-bar-wrapper">
+            <div id="vu-bar" class="vu-meter-bar"></div>
+          </div>
+        </div>
+
+        <div style="background: rgba(16, 185, 129, 0.08); border-left: 3px solid var(--success); padding: 8px 12px; border-radius: var(--radius-sm); margin-top: var(--space-md); font-size: 0.8rem; color: #a7f3d0;">
+          🔒 <strong>Privacy Assurance:</strong> Video is processed locally in your browser for preview. Only audio snippets are processed for answer evaluation.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>PARAKH Assessment Platform — Performance and Resume Analysis for Knowledge and Hiring.</p>
+  </footer>
+
+  <script type="module" src="/static/js/setup.js"></script>
+</body>
+</html>
